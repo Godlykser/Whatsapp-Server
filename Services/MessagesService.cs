@@ -11,28 +11,32 @@ namespace Services
     public class MessagesService
     {
         private Context context = new Context();
-        public List<Message> getAll(string belong, string contact)
+        public List<Message> GetAll(string belong, string contact)
         {
-            return context.Messages.Where(message => message.contactUsername == contact).ToList();
+            return context.Messages.Where(message => message.contactUsername == contact 
+                                            && message.belongs == belong).ToList();
         }
 
-        public void add(Message message)
+        public void Add(Message message)
         {
             context.Messages.Add(message);
             context.SaveChanges();
         }
 
-        public Message getMessage(string belongs, string contactUsername, int id2)
+        public Message GetMessage(string belongs, string contactUsername, int id2)
         {
             Message message = context.Messages.Find(id2);
             if (message != null && message.belongs == belongs && message.contactUsername == contactUsername) return message;
             else throw new Exception("Message not found");
         }
 
-        public void edit(Message message)
+        public void Edit(Message message)
         {
             Message oldMessage = context.Messages.Find(message.id);
-            if (oldMessage == null || oldMessage.belongs != message.belongs && oldMessage.contactUsername != message.contactUsername) throw new Exception("Message not found");
+            if (oldMessage == null || oldMessage.belongs != message.belongs && oldMessage.contactUsername != message.contactUsername)
+            {
+                throw new Exception("Message not found");
+            }
             if (message.content != null)
             {
                 oldMessage.content = message.content;
@@ -48,16 +52,15 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void delete(string belongs, string contactUsername,int id2)
+        public void Delete(string belongs, string contactUsername,int id2)
         {
             Message message = context.Messages.Find(id2);
-            if (message != null && message.belongs == belongs && message.contactUsername == contactUsername) context.Messages.Remove(message);
+            if (message != null && message.belongs == belongs && message.contactUsername == contactUsername)
+            {
+                context.Messages.Remove(message);
+            }
             else throw new Exception("Message not found");
             context.SaveChanges();
         }
-
-
     }
-
-
 }

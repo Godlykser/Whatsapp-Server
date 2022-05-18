@@ -1,22 +1,24 @@
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
 namespace WhatsappServer.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/contacts")]
     public class ContactsController : ControllerBase
     {
-        public string user = "chen";
         ContactsService service = new ContactsService();
 
         [HttpGet]
-        public IActionResult getAllContacts()
+        public IActionResult GetAllContacts()
         {
             try
             {
-                return Ok(service.getAll(user));
+                var user = HttpContext.User.FindFirst("username")?.Value;
+                return Ok(service.GetAll(user));
             }
             catch (Exception e)
             {
@@ -25,12 +27,13 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPost]
-        public IActionResult addContact([FromBody] Contact contact)
+        public IActionResult AddContact([FromBody] Contact contact)
         {
             try
             {
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 contact.belongTo = user;
-                service.add(contact);
+                service.Add(contact);
                 return Created("", contact);
             }
             catch (Exception e)
@@ -40,11 +43,12 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult getDetails(string id)
+        public IActionResult GetDetails(string id)
         {
             try
             {
-                return Ok(service.getDetails(user, id));
+                var user = HttpContext.User.FindFirst("username")?.Value;
+                return Ok(service.GetDetails(user, id));
             }
             catch (Exception e)
             {
@@ -57,9 +61,10 @@ namespace WhatsappServer.Controllers
         {
             try
             {
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 contact.belongTo = user;
                 contact.id = id;
-                service.edit(contact);
+                service.Edit(contact);
                 return NoContent();
             }
             catch (Exception e)
@@ -69,11 +74,12 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult deleteContact(string id)
+        public IActionResult DeleteContact(string id)
         {
             try
             {
-                service.delete(user, id);
+                var user = HttpContext.User.FindFirst("username")?.Value;
+                service.Delete(user, id);
                 return NoContent();
             }
             catch (Exception e)

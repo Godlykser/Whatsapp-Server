@@ -12,12 +12,12 @@ namespace WhatsappServer.Controllers
         MessagesService messagesService = new MessagesService();
         [Route("invitations")]
         [HttpPost]
-        public IActionResult invite([FromBody] Invite invite)
+        public IActionResult Invite([FromBody] Invite invite)
         {
             try
             {
                 Contact contact = new Contact { belongTo = invite.to, id = invite.from, name = invite.from, server = invite.server };
-                contactsService.add(contact);
+                contactsService.Add(contact);
                 return Created("", contact);
             }
             catch (Exception ex)
@@ -28,13 +28,13 @@ namespace WhatsappServer.Controllers
 
         [Route("transfer")]
         [HttpPost]
-        public IActionResult transfer([FromBody] Transfer transfer)
+        public IActionResult Transfer([FromBody] Transfer transfer)
         {
             try
             {
                 Message message = new Message { belongs = transfer.to, contactUsername = transfer.from, content = transfer.content, created = DateTime.Now, sent = false };
-                messagesService.add(message);
-                contactsService.edit(new Contact { belongTo=transfer.to, id = transfer.from, last = transfer.content, lastdate = DateTime.Now });
+                messagesService.Add(message);
+                contactsService.Edit(new Contact { belongTo = transfer.to, id = transfer.from, last = transfer.content, lastdate = DateTime.Now });
                 return Created("", message);
             }
             catch (Exception ex)

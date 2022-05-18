@@ -7,25 +7,33 @@ namespace Services
     {
         private Context context = new Context();
 
-        public List<Contact> getAll(string belong)
+        public List<Contact> GetAll(string belong)
         {
             return context.Contacts.Where(contact => contact.belongTo == belong).ToList();
         }
 
-        public void add(Contact contact)
+        public void Add(Contact contact)
         {
-            context.Contacts.Add(contact);
-            context.SaveChanges();
+            if(contact.id == null || contact.name == null || contact.server == null)
+            {
+                throw new Exception("Not enough parameters");
+            }
+            else
+            {
+                context.Contacts.Add(contact);
+                context.SaveChanges();
+            }
         }
 
-        public Contact? getDetails(string belongTo, string id)
+        public Contact? GetDetails(string belongTo, string id)
         {
             return context.Contacts.Find(belongTo, id);
         }
 
-        public void edit(Contact newContact)
+        public void Edit(Contact newContact)
         {
             var contact = context.Contacts.Find(newContact.belongTo, newContact.id);
+            
             if (newContact.name != null)
             {
                 contact.name = newContact.name;
@@ -45,7 +53,7 @@ namespace Services
             context.SaveChanges();
         }
 
-        public void delete(string belongTo, string id)
+        public void Delete(string belongTo, string id)
         {
             Contact contact = context.Contacts.Find(belongTo, id);
             if (contact != null)
