@@ -10,7 +10,6 @@ namespace WhatsappServer.Controllers
     [Route("api/contacts/{id}/messages")]
     public class MessagesController : ControllerBase
     {
-        public string user = "chen"; // owner of the list of contacts ("belongTo") NEEDS TO BE CHANGED
         MessagesService messagesService = new MessagesService();
         ContactsService contactsService = new ContactsService();
 
@@ -19,6 +18,7 @@ namespace WhatsappServer.Controllers
         {
             try
             {
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 return Ok(messagesService.GetAll(user, id));
             }
             catch(Exception e)
@@ -28,14 +28,17 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPost]
-        public IActionResult addMessage(string id, [FromBody] Message message)
+        public IActionResult addMessage(string id, string content)
         {
             try
             {
+                Message message = new Message();
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 message.sent = true;
                 message.contactUsername = id;
                 message.belongs = user;
                 message.created = DateTime.Now;
+                message.content = content;
                 messagesService.Add(message);
 
                 Contact contact = new Contact { belongTo = user, id = id, lastdate = DateTime.Now, last = message.content };
@@ -56,6 +59,7 @@ namespace WhatsappServer.Controllers
                 // user - the owner of the contacts list
                 // id - username in the list
                 // id2 - unique id of a message in the chat between "user" and "id"
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 return Ok(messagesService.GetMessage(user, id, id2));
             }
             catch (Exception e)
@@ -65,13 +69,16 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPut("{id2}")]
-        public IActionResult EditMessage(string id, int id2, [FromBody] Message message)
+        public IActionResult EditMessage(string id, int id2, string content)
         {
             try
             {
+                Message message = new Message();
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 message.belongs = user;
                 message.contactUsername = id;
                 message.id = id2;
+                message.content = content;
                 messagesService.Edit(message);
                 return NoContent();
             }
@@ -86,6 +93,7 @@ namespace WhatsappServer.Controllers
         {
             try
             {
+                var user = HttpContext.User.FindFirst("username")?.Value;
                 messagesService.Delete(user, id, id2);
                 return NoContent();
             }

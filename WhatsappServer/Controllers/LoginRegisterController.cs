@@ -45,7 +45,7 @@ namespace WhatsappServer.Controllers
                     signingCredentials: mac);
                 var options = new CookieOptions {Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
                 Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token),options);
-                return Ok();
+                return Ok(user.username);
             }
             catch (Exception ex)
             {
@@ -61,7 +61,8 @@ namespace WhatsappServer.Controllers
             try
             {
                 userService.CreateUser(user);
-                return Created("",user);
+                Login(user);
+                return Created("",user.username);
             }
             catch (Exception ex)
             {
