@@ -1,0 +1,84 @@
+.send-button {
+    font-family: inherit;
+    /* font-size: 20px; */
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.send-button span {
+    display: block;
+    margin-left: 0.3em;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.send-button svg {
+    display: block;
+    -webkit-transform-origin: center center;
+    -ms-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+    transition: -webkit-transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out;
+}
+
+.send-button:hover .svg-wrapper {
+    -webkit-animation: fly-1 0.6s ease-in-out infinite alternate;
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.send-button:hover svg {
+    -webkit-transform: translateX(1.2em) rotate(45deg) scale(1.1);
+    -ms-transform: translateX(1.2em) rotate(45deg) scale(1.1);
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+
+.send-button:hover span {
+    -webkit-transform: translateX(5em);
+    -ms-transform: translateX(5em);
+    transform: translateX(5em);
+}
+
+.send-button:active {
+    -webkit-transform: scale(0.95);
+    -ms-transform: scale(0.95);
+    transform: scale(0.95);
+}
+
+@-webkit-keyframes fly-1 {
+    from {
+        -webkit-transform: translateY(0.1em);
+        transform: translateY(0.1em);
+    }
+
+    to {
+        -webkit-transform: translateY(-0.1em);
+        transform: translateY(-0.1em);
+    }
+}
+
+@keyframes fly-1 {
+    from {
+        -webkit-transform: translateY(0.1em);
+        transform: translateY(0.1em);
+    }
+
+    to {
+        -webkit-transform: translateY(-0.1em);
+        transform: translateY(-0.1em);
+    }
+}

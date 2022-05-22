@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+
+.styledInput{
+    background: rgba(255, 255, 255, 0.40);
+    box-shadow: 0 1px 0 rgba(31, 38,135,0.37);
+    border-radius: 2rem;
+    width: 100%;
+    /* border:10px; */
+    outline: none;
+    backdrop-filter: blur(12rem);
+    text-indent:8px;
+    /* font-family: 'Poppins', sans-serif !important; */
+}
+
+.styledInput:focus{
+    /* background: rgba(255, 255, 255, 0.55); */
+    background-color: whitesmoke;
+    display: inline-block;
+    box-shadow: 0 0 0 0.2rem #cad4b2;
+    backdrop-filter: blur(12rem);
+    border-color: #cad4b2;
+    font-family: 'Poppins', sans-serif;
+    text-indent:8px;
+}
+
+.input-label-margin {
+    margin-left: 7px;
+}
+
+.goodInput {
+    color: rgb(10, 255, 10);
+    font-weight: 500;
+}
+
+.badInput {
+    color: rgb(255, 0, 50);
+    font-weight: 500;
+}
+
+.invalidMessage {
+    color: rgb(180, 0, 0);
+    height: 2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.notLoggedMessage {
+    height: 2rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+.welcomeText{
+    color: #000000;
+    margin: 0 0 1rem 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.7vw;
+    text-shadow: -2px 2px 13px rgba(185, 185, 185, 0.85);
+    font-weight: bold;
+    letter-spacing: 0;
+}
+
+.signInText{
+    margin: 0 0 3rem 0;
+    text-align: center;
+    font-size: 200%;
+}
+
+.mainButton{
+  background: rgb(197, 225, 210);
+  text-align: center;
+  justify-content: center;
+  text-decoration: solid;
+  font-size: 20px;
+  letter-spacing: 0.1rem;
+  width: 45%;
+  height: 3rem;
+  border: none;
+  color: rgb(0, 0, 0);
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 8px;
+  box-shadow: 0 1px 0 rgba(31, 38,135,0.37);
+  font-family: 'Poppins', sans-serif;
+}
+
+.mainButton:focus {
+    box-shadow: 0 0 0 0.1rem #a0a0a0;
+}
+
+.mainButton:hover {
+    background: rgba(255, 255, 255, 0.75);
+    color: black;
+}
+
+.w-45 {
+    width: 18vw !important;
+    text-align: center;
+    justify-content: center;
+}
+
+#register-image {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    
+}
+
+.register-image {
+    justify-content: center !important;
+    height: calc(3.5rem + 2px);
+    /* padding: 7% 7% 7% 0 ; */
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
+
+.align-left {
+    text-align: left;
+    list-style-type: none;
+    margin: 0;
+    padding: 0
+}
+
+#eye {
+    position: absolute;
+    right: 5%;
+    bottom: 30%;
+    z-index: 999;
+    cursor: pointer;
+
+}
+
+#eyeContainer {
+    position: relative;
+    justify-content: end;
+    display: block;
+}
+
+.red-border {
+    box-shadow: 0 8px 32px 0 rgba(255, 0, 0, 0.43);
+}
+
+#invalidImage {
+    display: none;
+    font-weight: 500;
+}

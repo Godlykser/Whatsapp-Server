@@ -1,0 +1,78 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    flex: 0.30 !important;
+}
+
+.sidebar__search {
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6;
+    height: 60px;
+    padding: 10px;
+}
+
+.sidebar__searchContainer {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 35px;
+    border-radius: 7px;
+}
+
+.bi-search {
+    border: none;
+    padding: 10px;
+    transition-duration: .5s;
+    transition-property: all;
+    transform: rotate(360deg);
+}
+
+.sidebar__searchContainer > input {
+    border: none;
+    margin-left: 10px;
+    outline: none;
+    flex: 1;
+}
+
+.sidebar__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-right: 1px solid lightgray;
+}
+
+.bi-person-circle {
+    font-size: 40px; 
+}
+
+.bi-person-plus {
+    font-size:40px;
+}
+
+.sidebar__chats {
+    flex: 1;
+    background-color: white;
+    overflow: auto;
+    border-bottom-left-radius: 5px;
+}
+
+.sidebar__header > span {
+    /* font-size: 1.5rem;
+    font-weight: bolder; */
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    height: 8vh;
+    
+}
+
+.sidebar__header > span > img {
+    height: 80%;
+    max-width: 200px;
+    clip-path: circle();
+}
