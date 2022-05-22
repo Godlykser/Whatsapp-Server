@@ -28,7 +28,7 @@ export default function UsernameInput ({ setter }) {
 
     function validate() {
         let val = target.current.value;
-        if (UserExists(val)) {
+        if (val.length > 2 && UserExists(val)) {
             setli3(<span><i className="bi bi-x-lg"></i> Already in use</span>)
             setValidli3('badInput');
             f3 = false;

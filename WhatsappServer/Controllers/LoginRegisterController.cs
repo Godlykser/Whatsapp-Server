@@ -19,6 +19,20 @@ namespace WhatsappServer.Controllers
         }
 
         UserService userService = new UserService();
+        [HttpGet("{id}")]
+        public IActionResult UserAvailable(string id)
+        {
+            try
+            {
+                userService.UserAvailable(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [Route("login")]
         [HttpPost]
         public IActionResult Login([FromBody] User user)

@@ -12,6 +12,11 @@ namespace Services
     {
         private Context context = new Context();
 
+        public void UserAvailable(string id)
+        {
+            if (context.Users.Find(id) != null) throw new Exception("User already exists");
+        }
+
         public void CreateUser(User user)
         {
             if (context.Users.Find(user.username)!=null) throw new Exception("User already exists");

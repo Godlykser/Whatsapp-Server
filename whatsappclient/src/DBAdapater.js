@@ -1,10 +1,18 @@
 import DB from "./DB.json";
 
+const server = "http://localhost:5064/api/";
+
 // Checks if username already exists.
-function UserExists(username) {
+/*function UserExists(username) {
   const user = DB.Users.find((u) => u.Username === username.toLowerCase());
   return user !== undefined ? true : false;
+}*/
+
+async function UserExists(username) {
+    const response = await fetch(server + username);
+    return (response.status === 400) ? true : false;
 }
+
 
 // Adds user to the DB.
 function AddUser(username, nickname, password, image) {
