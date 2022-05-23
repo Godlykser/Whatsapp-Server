@@ -19,6 +19,7 @@ namespace WhatsappServer.Controllers
         }
 
         UserService userService = new UserService();
+
         [Route("login")]
         [HttpPost]
         public IActionResult Login([FromBody] User user)
