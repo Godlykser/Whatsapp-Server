@@ -57,8 +57,10 @@ namespace WhatsappServer.Controllers
                     claims,
                     expires: DateTime.UtcNow.AddMinutes(20),
                     signingCredentials: mac);
-                var options = new CookieOptions {Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
-                Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token),options);
+                var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
+                options.Path = "/chats";
+                Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
+                Response.Headers.Append("Access-Control-Allow-Origin", "http://localhost");
                 return Ok(user.username);
             }
             catch (Exception ex)
@@ -75,7 +77,7 @@ namespace WhatsappServer.Controllers
             try
             {
                 userService.CreateUser(user);
-                Login(user);
+                // Login(user);
                 return Created("",user.username);
             }
             catch (Exception ex)

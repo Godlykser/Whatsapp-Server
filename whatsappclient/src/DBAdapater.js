@@ -1,30 +1,48 @@
 import DB from "./DB.json";
+import $ from 'jquery';
 
 const server = "http://localhost:5064/api/";
 
-// Checks if username already exists.
-/*function UserExists(username) {
-  const user = DB.Users.find((u) => u.Username === username.toLowerCase());
-  return user !== undefined ? true : false;
-}*/
+// function UserExists(username) {
+//   const user = DB.Users.find((u) => u.Username === username.toLowerCase());
+//   return user !== undefined ? true : false;
+// }
 
+// Checks if username already exists.
 async function UserExists(username) {
-    const response = await fetch(server + username);
-    return (response.status === 400) ? true : false;
+  let response;
+  await $.ajax({
+    url: server + username,
+    type: 'GET',
+    contentType: 'application/json',
+    success: (data) => { response = false; },
+  }).catch(() => { response = true; })
+  return response;
 }
 
+// function AddUser(username, nickname, password, image) {
+//   if (UserExists(username)) return;
+//   DB.Users.push({
+//     Username: username.toLowerCase(),
+//     Nickname: nickname,
+//     Password: password,
+//     Image: image,
+//     LastSeen: "Now",
+//     Contacts: []
+//   });
+// }
 
 // Adds user to the DB.
-function AddUser(username, nickname, password, image) {
-  if (UserExists(username)) return;
-  DB.Users.push({
-    Username: username.toLowerCase(),
-    Nickname: nickname,
-    Password: password,
-    Image: image,
-    LastSeen: "Now",
-    Contacts: []
-  });
+async function AddUser(username, nickname, password, image) {
+  const userJSON = { username, password, nickname };
+  await $.ajax({
+    url: server + 'register',
+    type: 'POST',
+    data: JSON.stringify(userJSON),
+    contentType: 'application/json; charset=utf-8',
+    success: () => { console.log("hatula") },
+    error: () => { console.log("pizza"); }
+  })
 }
 
 // Adds a message to the chat
@@ -53,12 +71,35 @@ function AddContact(username, contact) {
   }
 }
 
+// function LoginCheck(username, password) {
+//   if (!UserExists(username)) return false;
+//   const user = DB.Users.find((user) => user.Username === username);
+//   return user.Password === password;
+// }
+
 // Checks if details are valid for login.
-function LoginCheck(username, password) {
-  if (!UserExists(username)) return false;
-  const user = DB.Users.find((user) => user.Username === username);
-  return user.Password === password;
+async function Login(username, password) {
+  const userJSON = { username, password };
+  let response;
+  await $.ajax({
+    url: server + "login",
+    type: 'POST',
+    xhrFields: { withCredentials: true },
+    data: JSON.stringify(userJSON),
+    contentType: 'application/json; charset=utf-8',
+    success: () => { response = true; }
+  }).catch(() => { response = false; })
+  return response;
 }
+
+// async function Login(username, password) {
+//   await axios.post(
+//     server + 'login',
+//     { username, password },
+//     { withCredentials: true }
+//   )
+//   return true;
+// }
 
 // Returns user's nickname.
 function GetNickname(username) {
@@ -130,7 +171,7 @@ export {
   AddUser,
   AddMessage,
   AddContact,
-  LoginCheck,
+  Login,
   UserExists,
   GetNickname,
   GetImage,

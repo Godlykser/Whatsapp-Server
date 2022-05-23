@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './MainContainer.css';
 import './forms.css';
-import { LoginCheck } from "../../DBAdapater";
+import { Login } from "../../DBAdapater";
 import $ from 'jquery';
 
 
@@ -37,10 +37,10 @@ export default function LoginForm({ setActiveUser }) {
         }
     }
 
-    const Login = function (element) {
+    const login = async function (element) {
         element.preventDefault();
 
-        if (LoginCheck(usernameValue, passwordValue)) {
+        if (await Login(usernameValue, passwordValue)) {
             setActiveUser(usernameValue);
             navigate('/chats');
         } else {
@@ -55,7 +55,7 @@ export default function LoginForm({ setActiveUser }) {
 
     return (
         <div id='loginContainer' className="mainContainer">
-            <form className="w-45" onSubmit={Login}>
+            <form className="w-45" onSubmit={login}>
                 <div className="welcomeText" > Sign in </div>
                 <InputForm id={"login-username"} placeholder={"Username"} type="text" max='12' setter={(e) => { setUsernameValue(e) }} />
                 <span id='eyeContainer'>

@@ -33,7 +33,7 @@ namespace Services
             User user2 = context.Users.Find(user.username);
             if (user2 == null|| user2.password != user.password)
             {
-                throw new Exception("User does not exist");
+                throw new Exception("Incorrect password");
             }
         }
     }

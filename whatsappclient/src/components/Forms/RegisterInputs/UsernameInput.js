@@ -26,9 +26,9 @@ export default function UsernameInput ({ setter }) {
 
     let f1, f2, f3;
 
-    function validate() {
+    async function validate() {
         let val = target.current.value;
-        if (val.length > 2 && UserExists(val)) {
+        if (val.length > 2 && await UserExists(val)) {
             setli3(<span><i className="bi bi-x-lg"></i> Already in use</span>)
             setValidli3('badInput');
             f3 = false;
