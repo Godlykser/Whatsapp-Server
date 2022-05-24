@@ -2,7 +2,7 @@ import $ from "jquery";
 import React, { useState } from "react";
 import {
   AddMessage,
-  GetImage,
+  // GetImage,
   GetLastSeen,
   GetNickname,
   GetTime
@@ -71,11 +71,11 @@ export default function Chat(props) {
           >
             <source src={msg.Content} type="audio/mp3" />
           </audio>
-          <img
+          {/* <img
             className="audioAvatar"
             alt={msg.Sender}
             src={GetImage(msg.Sender)}
-          />
+          /> */}
         </>
       );
     }
@@ -117,7 +117,7 @@ export default function Chat(props) {
         <div className="chat">
           <div id="chatHeader" className="chat__header">
             <div className="chat__headerInfo">
-              <img src={GetImage(props.curContact)} alt="" />
+              {/* <img src={GetImage(props.curContact)} alt="" /> */}
               <span>
                 <p>{GetNickname(props.curContact)}</p>
                 <span>{GetLastSeen(props.curContact)}</span>

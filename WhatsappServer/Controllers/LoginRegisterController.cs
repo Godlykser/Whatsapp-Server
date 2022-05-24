@@ -58,9 +58,7 @@ namespace WhatsappServer.Controllers
                     expires: DateTime.UtcNow.AddMinutes(20),
                     signingCredentials: mac);
                 var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
-                options.Path = "/chats";
                 Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
-                Response.Headers.Append("Access-Control-Allow-Origin", "http://localhost");
                 return Ok(user.username);
             }
             catch (Exception ex)

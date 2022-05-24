@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 
@@ -43,9 +42,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins, builder =>
+    options.AddPolicy("Allow All", builder =>
     {
-        builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().WithOrigins("http://localhost:3000/");
+        builder.SetIsOriginAllowed(origin => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
     });
 });
 
@@ -59,7 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection(); maybe
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("Allow All");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,6 +1,6 @@
 import React from "react";
 import "./SidebarChat.css";
-import { GetImage, GetTime } from "../../DBAdapater";
+import { /*GetImage,*/ GetTime } from "../../DBAdapater";
 
 export default function SidebarChat(props) {
   const lastMessage = (msg) => {
@@ -34,7 +34,7 @@ export default function SidebarChat(props) {
       onClick={() => props.setActiveContact(props.contact.toLowerCase())}
     >
       <span>
-        <img alt={props.contact} src={GetImage(props.contact)} />
+        {/* <img alt={props.contact} src={GetImage(props.contact)} /> */}
         <div className="sidebarChat__info">
           <h2>{props.nickname}</h2>
           <p>{lastMessage(props.lastMessage)}</p>

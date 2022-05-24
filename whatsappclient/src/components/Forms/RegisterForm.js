@@ -4,7 +4,7 @@ import UsernameInput from "./RegisterInputs/UsernameInput";
 import PasswordInput from "./RegisterInputs/PasswordInput";
 import PassValidInput from "./RegisterInputs/PassValidInput";
 import DisplayInput from "./RegisterInputs/DisplayInput";
-import { AddUser } from "../../DBAdapater";
+import { AddUser, Login } from "../../DBAdapater";
 import $ from 'jquery';
 import { Overlay, Tooltip } from "react-bootstrap";
 import ImageInput from "./RegisterInputs/ImageInput";
@@ -34,11 +34,12 @@ export default function RegisterForm({ setActiveUser }) {
     });
 
     // Registering after submition
-    const Register = function (element) {
+    const Register = async function (element) {
         element.preventDefault();
         if (username !== '' && password !== '' && passValid !== '' && nickname !== '' && image !== '') {
-            AddUser(username, nickname, password, image);
+            await AddUser(username, nickname, password, image);
             setActiveUser(username);
+            await Login(username, password);
             navigate('/chats');
         } else {
             $('#registerContainer').addClass('red-border');

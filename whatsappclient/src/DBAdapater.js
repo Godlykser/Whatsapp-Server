@@ -34,14 +34,12 @@ async function UserExists(username) {
 
 // Adds user to the DB.
 async function AddUser(username, nickname, password, image) {
-  const userJSON = { username, password, nickname };
+  const userJSON = { username, password, server: 'http://localhost:' + window.location.port };
   await $.ajax({
     url: server + 'register',
     type: 'POST',
     data: JSON.stringify(userJSON),
     contentType: 'application/json; charset=utf-8',
-    success: () => { console.log("hatula") },
-    error: () => { console.log("pizza"); }
   })
 }
 
@@ -110,12 +108,12 @@ function GetNickname(username) {
 }
 
 // Returns user's image.
-function GetImage(username) {
-  if (UserExists(username)) {
-    const user = DB.Users.find((user) => user.Username === username);
-    return user.Image;
-  }
-}
+// function GetImage(username) {
+//   if (UserExists(username)) {
+//     const user = DB.Users.find((user) => user.Username === username);
+//     return user.Image;
+//   }
+// }
 
 // Returns user's last seen.
 function GetLastSeen(username) {
@@ -126,12 +124,26 @@ function GetLastSeen(username) {
 }
 
 // Returns all the users that this user has chat history with.
-function GetContacts(username) {
-  if (UserExists(username)) {
-    const user = DB.Users.find((user) => user.Username === username);
-    return user.Contacts !== undefined ? user.Contacts : [];
-  }
-  return [];
+// function GetContacts(username) {
+//   if (UserExists(username)) {
+//     const user = DB.Users.find((user) => user.Username === username);
+//     return user.Contacts !== undefined ? user.Contacts : [];
+//   }
+//   return [];
+// }
+
+async function GetContacts(username) {
+  let response;
+  await $.ajax({
+    url: server + "contacts",
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    contentType: 'application/json',
+    dataType: 'json',
+    success: (data) => { response = data; },
+  }).catch(() => { response = {}; })
+  console.log(response);
+  return response;
 }
 
 // Returns the chat of the user with another user, if exists.
@@ -174,7 +186,7 @@ export {
   Login,
   UserExists,
   GetNickname,
-  GetImage,
+  // GetImage,
   GetChat,
   GetContacts,
   GetLastMessage,

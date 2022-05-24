@@ -6,7 +6,7 @@ import {
   GetContacts,
   GetNickname,
   GetChat,
-  GetImage,
+  // GetImage,
 } from "../../DBAdapater";
 import AddContactButton from "./AddContactButton";
 import LogoutButton from "./LogoutButton";
@@ -27,7 +27,6 @@ function Sidebar(props) {
   }, [search, JSON.stringify(contacts), props.updateLastMessage]); // stringify since useEffect doesn't catch array changes
 
   const sortContacts = (contactA, contactB) => {
-    // debugger;
     const chat1 = GetChat(props.activeUser, contactA);
     const chat2 = GetChat(props.activeUser, contactB);
     if (chat1.Messages.length === 0) return -1;
@@ -41,8 +40,7 @@ function Sidebar(props) {
     <div className="sidebar">
       <div className="sidebar__header">
         <span>
-          <img alt="profile" src={GetImage(props.activeUser)} />
-          {/* <span>{GetNickname(props.activeUser)}</span> */}
+          {/* <img alt="profile" src={GetImage(props.activeUser)} /> */}
         </span>
         <span>
           <AddContactButton

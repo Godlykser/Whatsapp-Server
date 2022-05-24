@@ -42,6 +42,7 @@ export default function LoginForm({ setActiveUser }) {
 
         if (await Login(usernameValue, passwordValue)) {
             setActiveUser(usernameValue);
+            await setInterval(() => {}, 200);
             navigate('/chats');
         } else {
             setInvalidMessage("Invalid username or password.");
