@@ -33,6 +33,8 @@ namespace WhatsappServer.Controllers
             {
                 var user = HttpContext.User.FindFirst("username")?.Value;
                 contact.belongTo = user;
+                contact.last = null;
+                contact.lastdate = null;
                 service.Add(contact);
                 return Created("", contact);
             }

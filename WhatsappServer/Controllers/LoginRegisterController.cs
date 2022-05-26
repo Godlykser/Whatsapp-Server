@@ -19,6 +19,20 @@ namespace WhatsappServer.Controllers
         }
 
         UserService userService = new UserService();
+        [HttpGet("{id}")]
+        public IActionResult UserAvailable(string id)
+        {
+            try
+            {
+                userService.UserAvailable(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
         [Route("login")]
         [HttpPost]
         public IActionResult Login([FromBody] User user)
@@ -43,9 +57,9 @@ namespace WhatsappServer.Controllers
                     claims,
                     expires: DateTime.UtcNow.AddMinutes(20),
                     signingCredentials: mac);
-                var options = new CookieOptions {Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
-                Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token),options);
-                return Ok();
+                var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
+                Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
+                return Ok("Welcome!");
             }
             catch (Exception ex)
             {
@@ -61,7 +75,7 @@ namespace WhatsappServer.Controllers
             try
             {
                 userService.CreateUser(user);
-                return Created("",user);
+                return Created("",user.username);
             }
             catch (Exception ex)
             {
