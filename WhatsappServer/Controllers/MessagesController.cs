@@ -68,16 +68,14 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPut("{id2}")]
-        public IActionResult EditMessage(string id, int id2, string content)
+        public IActionResult EditMessage(string id, int id2, [FromBody] Message message)
         {
             try
             {
-                Message message = new Message();
                 var user = HttpContext.User.FindFirst("username")?.Value;
                 message.belongs = user;
                 message.contactUsername = id;
                 message.id = id2;
-                message.content = content;
                 messagesService.Edit(message);
                 return NoContent();
             }

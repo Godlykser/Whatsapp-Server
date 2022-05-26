@@ -31,11 +31,7 @@ export default function SendVideoButton(props) {
 
   return (
     <>
-      <li
-        onClick={() => {
-          setShow(true);
-        }}
-      >
+      <li>
         <span className="dropdown-item">
           <i className="bi bi-camera-video attachment-icon" />
         </span>

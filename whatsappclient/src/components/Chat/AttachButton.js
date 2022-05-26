@@ -10,7 +10,7 @@ function AttachButton(props) {
 
     return (
         <div className="dropup">
-            <NavDropdown title={<i className="bi bi-paperclip attachment-icon" />} id="chat-attachment"
+            <NavDropdown title={<i className="bi bi-paperclip attachment-icon" />} id="chat-attachment" 
                 show={show} onMouseEnter={() => { setShow(true); }} onMouseLeave={() => { setShow(false); }} onClick={() => {setShow(false);}}>
                 <SendVideoButton {...props} />
                 <SendImageButton {...props} />

@@ -112,11 +112,12 @@ export default function SendVoiceButton2(props) {
             $('#voiceControl').hide(250);
         }
         
-    }
-
+    }  
+     
+    // Removed: onClick={recordAudio}>
     return (
         <div id='recordContainer'>
-            <button id="playRecord" className="voiceButton" type='button' onClick={recordAudio}>
+            <button id="playRecord" className="voiceButton" type='button'> 
                 <i className="bi bi-mic-fill" />
             </button>
             <VoiceMessagePanel 

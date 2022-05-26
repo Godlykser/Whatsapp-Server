@@ -21,7 +21,6 @@ export default function Chat(props) {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(props.curContact)
     if (recordInput !== "") {
       sendMessage(e, "audio", recordInput);
       $("#voiceControl").hide(250);

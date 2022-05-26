@@ -37,11 +37,7 @@ export default function SendImageButton(props) {
 
   return (
     <>
-      <li
-        onClick={() => {
-          setShow(true);
-        }}
-      >
+      <li>
         <span className="dropdown-item">
           <i className="bi bi-image attachment-icon" />
         </span>
