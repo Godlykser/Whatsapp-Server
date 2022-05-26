@@ -13,7 +13,8 @@ export default function ChatsScreen({ activeUser }) {
   
   useEffect(() => {
     if (activeContact !== '') {
-      setCurChat(GetChat(activeUser, activeContact));
+      GetChat(activeContact, setCurChat);
+      // setCurChat(GetChat(activeUser, activeContact));
     }
   }, [activeContact]);
 
@@ -30,6 +31,7 @@ export default function ChatsScreen({ activeUser }) {
                 updateLastMessage={updateLastMessage} />
             <Chat
                 curChat={curChat}
+                setCurChat = { setCurChat }
                 activeUser={activeUser}
                 curContact={activeContact}
                 setUpdateLastMessage={setUpdateLastMessage}

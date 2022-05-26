@@ -28,17 +28,16 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPost]
-        public IActionResult addMessage(string id, string content)
+        public IActionResult addMessage(string id, [FromBody] Message message)
         {
             try
             {
-                Message message = new Message();
                 var user = HttpContext.User.FindFirst("username")?.Value;
-                message.sent = true;
+                message.sent = message.sent;
                 message.contactUsername = id;
                 message.belongs = user;
                 message.created = DateTime.Now;
-                message.content = content;
+                message.content = message.content;
                 messagesService.Add(message);
 
                 Contact contact = new Contact { belongTo = user, id = id, lastdate = DateTime.Now, last = message.content };

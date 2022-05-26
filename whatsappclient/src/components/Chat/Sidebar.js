@@ -6,16 +6,21 @@ import {
   GetContacts,
   GetNickname,
   GetChat,
-  // GetImage,
+  GetImage,
+  GetTime,
 } from "../../DBAdapater";
 import AddContactButton from "./AddContactButton";
 import LogoutButton from "./LogoutButton";
 
 function Sidebar(props) {
-  // const contacts = GetContacts(props.activeUser);
-  const [contacts, setContacts] = useState(GetContacts(props.activeUser));
+
+  const [contacts, setContacts] = useState(undefined);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState(contacts);
+
+  useEffect(() => {
+    GetContacts(setContacts);
+  },[]);
 
   useEffect(() => {
     if (contacts !== undefined) {
@@ -26,21 +31,38 @@ function Sidebar(props) {
     }
   }, [search, JSON.stringify(contacts), props.updateLastMessage]); // stringify since useEffect doesn't catch array changes
 
-  const sortContacts = (contactA, contactB) => {
-    const chat1 = GetChat(props.activeUser, contactA);
-    const chat2 = GetChat(props.activeUser, contactB);
-    if (chat1.Messages.length === 0) return -1;
-    if (chat2.Messages.length === 0) return -1;
-    const time1 = new Date(GetLastMessage(chat1).Time);
-    const time2 = new Date(GetLastMessage(chat2).Time);
-    return time2 - time1;
-  };
+  function sortContacts(contactsList) {
+    if (contactsList === undefined) return [];
+    contactsList.sort((a, b) => {
+        const dateA = new Date(a.lastdate);
+        const dateB = new Date(b.lastdate);
+        return dateB - dateA;
+    });
+    return contactsList;
+  }
+
+  const s = () => { 
+    if (contacts === undefined) return "";
+    const con = (filter === undefined) ? contacts : filter;
+    return (
+    sortContacts(con).map((contact) => {
+      return (
+      <SidebarChat
+        setActiveContact={props.setActiveContact}
+        activeContact={props.activeContact}
+        contact={contact}
+        nickname={GetNickname(contact)}
+        lastMessage={{Content: contact.last, Time: contact.lastdate}}
+        key={contact.id}
+      />
+    )}));
+  }
 
   return (
     <div className="sidebar">
       <div className="sidebar__header">
         <span>
-          {/* <img alt="profile" src={GetImage(props.activeUser)} /> */}
+          <img alt="profile" src={GetImage(props.activeUser)} />
         </span>
         <span>
           <AddContactButton
@@ -66,7 +88,8 @@ function Sidebar(props) {
       </div>
 
       <div className="sidebar__chats">
-        {filter.sort(sortContacts).map((contact) => (
+        {/* {sortContacts(GetContacts()).map((key, contact) => {
+          return (
           <SidebarChat
             setActiveContact={props.setActiveContact}
             contact={contact}
@@ -74,7 +97,8 @@ function Sidebar(props) {
             lastMessage={GetLastMessage(GetChat(props.activeUser, contact))}
             key={contact}
           />
-        ))}
+        )})} */}
+        {s()}
       </div>
     </div>
   );
