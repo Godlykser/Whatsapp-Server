@@ -12,6 +12,11 @@ namespace Services
     {
         private Context context = new Context();
 
+        public void UserAvailable(string id)
+        {
+            if (context.Users.Find(id) != null) throw new Exception("User already exists");
+        }
+
         public void CreateUser(User user)
         {
             if (context.Users.Find(user.username)!=null) throw new Exception("User already exists");
@@ -28,7 +33,7 @@ namespace Services
             User user2 = context.Users.Find(user.username);
             if (user2 == null|| user2.password != user.password)
             {
-                throw new Exception("User does not exist");
+                throw new Exception("Incorrect password");
             }
         }
     }

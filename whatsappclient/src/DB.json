@@ -1,0 +1,164 @@
+{
+    "Users": [
+        {
+            "Username": "fifty",
+            "Nickname": "50 cent",
+            "Password": "505050",
+            "Image": "/images/fcentpic.jpg",
+            "LastSeen": "Today, 10:38",
+            "Contacts": ["snoop"]
+        },
+        {
+            "Username": "eminem",
+            "Nickname": "slim shady",
+            "Password": "11111",
+            "Image": "/images/slimshadypic.jpg",
+            "LastSeen": "Today, 11:24",
+            "Contacts": ["snoop"]
+        },
+        {
+            "Username": "snoop",
+            "Nickname": "snoop dogg",
+            "Password": "22222",
+            "Image": "/images/snoopdogpic.jpg",
+            "LastSeen": "Today, 11:51",
+            "Contacts": ["fifty", "eminem", "tupac", "chris", "drake"]
+        },
+        {
+            "Username": "tupac",
+            "Nickname": "2pac",
+            "Password": "33333",
+            "Image": "/images/gpic.jpg",
+            "LastSeen": "A few years ago...",
+            "Contacts": ["snoop"]
+        },
+        {
+            "Username": "chris",
+            "Nickname": "chris brown",
+            "Password": "44444",
+            "Image": "/images/chrispic.jpg",
+            "LastSeen": "Today, 10:22",
+            "Contacts": ["snoop"]
+        },
+        {
+            "Username": "drake",
+            "Nickname": "drizzy drake",
+            "Password": "66666",
+            "Image": "/images/drakepic.jpg",
+            "LastSeen": "Yesterday, 23:01",
+            "Contacts": ["snoop"]
+        }
+    ],
+
+    "Chats": [
+        {
+            "Contact1": "snoop",
+            "Contact2": "fifty",
+            "Messages": [
+                {
+                    "Sender": "fifty",
+                    "Time": "2022-01-23T09:05:45.904Z",
+                    "Type": "video",
+                    "Content": "/messages/candyshop.mp4"
+                },
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T09:20:45.904Z",
+                    "Type": "text",
+                    "Content": "k cool see u there"
+                },
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T09:20:45.904Z",
+                    "Type": "video",
+                    "Content": "/messages/50snoop.mp4"
+                }
+                ,{
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T09:21:45.904Z",
+                    "Type": "text",
+                    "Content": "remember when we were making fun of new rappers"
+                }
+                ,
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T09:23:45.904Z",
+                    "Type": "audio",
+                    "Content": "/messages/snoop-dogg-smoke-weed-everyday.mp3"
+                }
+            ]
+        },
+        {
+            "Contact1": "snoop",
+            "Contact2": "eminem",
+            "Messages": [
+                {
+                    "Sender": "eminem",
+                    "Time": "2022-01-23T11:11:45.904Z",
+                    "Type": "text",
+                    "Content": "remember u diss me"
+                },
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T12:22:45.904Z",
+                    "Type": "text",
+                    "Content": "but now we're cool homie"
+                },
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T12:23:45.904Z",
+                    "Type": "image",
+                    "Content": "/messages/snoopeminem.jpg"
+                }
+            ]
+        },
+        {
+            "Contact1": "snoop",
+            "Contact2": "tupac",
+            "Messages": [
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T07:04:45.904Z",
+                    "Type": "image",
+                    "Content": "/messages/2andsnoop.png"
+                },
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T07:04:45.904Z",
+                    "Type": "text",
+                    "Content": "miss u bro"
+                }
+            ]
+        },
+        {
+            "Contact1": "snoop",
+            "Contact2": "chris",
+            "Messages": [
+                {
+                    "Sender": "chris",
+                    "Time": "2022-01-23T08:07:45.904Z",
+                    "Type": "image",
+                    "Content": "/messages/chrisandsnoop.jpg"
+                },
+                {
+                    "Sender": "chris",
+                    "Time": "2022-01-23T08:07:45.904Z",
+                    "Type": "text",
+                    "Content": "what u up to"
+                }
+            ]
+        },
+        {
+            "Contact1": "snoop",
+            "Contact2": "drake",
+            "Messages": [
+                {
+                    "Sender": "snoop",
+                    "Time": "2022-01-23T04:04:45.904Z",
+                    "Type": "text",
+                    "Content": "don't forget to put your money in the grave"
+                }
+            ]
+        }
+    ]
+}

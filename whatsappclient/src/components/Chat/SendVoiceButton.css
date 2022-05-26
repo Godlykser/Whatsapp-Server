@@ -1,0 +1,68 @@
+.voiceButton {
+    padding: 0 10px 0 10px;
+    border-color: transparent;
+    font-size: 1.5rem;
+    height: 100%;
+}
+
+#recordContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#voiceControl {
+    min-width: max-content;
+    /* height: fit-content; */
+    position: absolute;
+    right: -130%;
+    bottom: 130%;
+    background-color: #EFEFEF;
+    border-radius: 10%;
+    display: none;
+    justify-content: center;
+}
+
+.voiceControlButton {
+    padding: 0 10px 0 10px;
+    border-color: transparent;
+    font-size: 1.4rem;
+    height: 100%;
+    display: inline-block;
+    border-radius: 10%;
+}
+
+.voiceControlButton:hover {
+    background-color: #e2e2e2;
+
+}
+
+.voiceControlButton:active {
+    background-color: #dcdcdc;
+
+}
+
+#playAudioButton {
+    display: none;
+}
+
+#pauseAudioButton {
+    display: none;
+}
+
+#voiceTime {
+    padding: 5px;
+    font-weight: 500;
+    position: relative;
+    bottom: 2px;
+}
+
+#resumeButton {
+    display: none;
+}
+
+#validButton {
+    display: none;
+    color: green;
+}
