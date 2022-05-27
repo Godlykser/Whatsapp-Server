@@ -13,8 +13,10 @@ namespace Services
         private Context context = new Context();
         public List<Message> GetAll(string belong, string contact)
         {
-            return context.Messages.Where(message => message.contactUsername == contact 
-                                            && message.belongs == belong).ToList();
+            return context.Messages.Where(message => (message.contactUsername == contact 
+                                            && message.belongs == belong)
+                                            || message.contactUsername == belong
+                                            && message.belongs == contact).ToList();
         }
 
         public void Add(Message message)

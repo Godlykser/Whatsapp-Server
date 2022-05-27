@@ -1,24 +1,31 @@
 import { React, useState, useEffect } from "react";
 import "./AddContactButton.css";
-import { UserExists, AddContact } from "../../DBAdapater";
+import { UserExists, AddContact, GetChat, GetContact } from "../../DBAdapater";
 
 function AddContactButton(props) {
   const [disabled, setDisabled] = useState(true);
   const [contact, setContact] = useState("");
+  const [name, setName] = useState("");
+  const [server, setServer] = useState("");
 
   useEffect(() => {
-    var temp = (!UserExists(contact) || contact===props.activeUser);
+    var temp = (!UserExists(contact.id) || contact.id===props.activeUser);
     setDisabled(temp);
   }, [contact]);
 
-  const addContact = () => {
-    if (UserExists(contact) && contact!==props.activeUser) {
-      AddContact(props.activeUser, contact);
-      props.setActiveContact(contact);
+  const addContact = async () => {
+    if (contact === '' || contact === '' || server === '') return;
+    if (UserExists(contact) && contact !== props.activeUser) {
+      await AddContact(contact, name, server);
+      const newContact = await GetContact(contact);
+      await GetChat(newContact, props.setCurChat);
+      props.setActiveContact(newContact);
+      setContact("");
+      setName("");
+      setServer("");
     }
-    setContact("");
-    const updatedContacts = props.contacts;
-    props.setContacts(updatedContacts);
+    // const updatedContacts = props.contacts;
+    // props.setContacts(updatedContacts);
   };
 
   const clearContact = () => {
@@ -67,13 +74,35 @@ function AddContactButton(props) {
                 <div className="form-floating mb-3">
                   <input
                     type="text"
-                    placeholder="Contact's contact"
-                    id="floatingInput"
+                    placeholder="Contact's id"
+                    id="contactid"
                     className="form-control"
                     value={contact}
                     onChange={(e) => setContact(e.target.value)}
                   />
-                  <label htmlFor="floatingInput">Add Contact</label>
+                  <label htmlFor="contactid">ID</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    placeholder="Contact's name"
+                    id="contactname"
+                    className="form-control"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <label htmlFor="contactname">Name</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    placeholder="Contact's server"
+                    id="contactser"
+                    className="form-control"
+                    value={server}
+                    onChange={(e) => setServer(e.target.value)}
+                  />
+                  <label htmlFor="contactser">Server</label>
                 </div>
               </div>
               <div className="modal-footer">

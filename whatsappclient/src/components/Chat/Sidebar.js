@@ -2,12 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import SidebarChat from "./SidebarChat";
 import {
-  GetLastMessage,
   GetContacts,
   GetNickname,
-  GetChat,
   GetImage,
-  GetTime,
 } from "../../DBAdapater";
 import AddContactButton from "./AddContactButton";
 import LogoutButton from "./LogoutButton";
@@ -20,9 +17,6 @@ function Sidebar(props) {
 
   useEffect(() => {
     GetContacts(setContacts);
-  },[]);
-
-  useEffect(() => {
     if (contacts !== undefined) {
       const filteredContacts = contacts.filter((name) =>
         GetNickname(name).toLowerCase().includes(search.toLowerCase())
@@ -70,6 +64,7 @@ function Sidebar(props) {
             setActiveContact={props.setActiveContact}
             setContacts={setContacts}
             contacts={contacts}
+            setCurChat={props.setCurChat}
           />
           <LogoutButton />
         </span>
@@ -88,16 +83,6 @@ function Sidebar(props) {
       </div>
 
       <div className="sidebar__chats">
-        {/* {sortContacts(GetContacts()).map((key, contact) => {
-          return (
-          <SidebarChat
-            setActiveContact={props.setActiveContact}
-            contact={contact}
-            nickname={GetNickname(contact)}
-            lastMessage={GetLastMessage(GetChat(props.activeUser, contact))}
-            key={contact}
-          />
-        )})} */}
         {s()}
       </div>
     </div>

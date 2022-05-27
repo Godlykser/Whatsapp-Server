@@ -10,7 +10,7 @@ const server = "http://localhost:5064/api/";
 
 // Checks if username already exists.
 async function UserExists(username) {
-  if (username.length < 1) return false;
+  if (username === undefined || username.length < 1 ) return false;
   let response;
   await $.ajax({
     url: server + username,
@@ -56,20 +56,31 @@ async function AddMessage(sender, receiver, content) {
   }).catch((ex) => console.log(ex))
 }
 
-function AddContact(username, contact) {
-  if (UserExists(username) && UserExists(contact)) {
-    const user = DB.Users.find((user) => user.Username === username);
-    if (!user.Contacts.find((t) => t === contact)) {
-      user.Contacts.push(contact);
-      const cont = DB.Users.find((c) => c.Username === contact)
-      cont.Contacts.push(username);
-      DB.Chats.push({
-        Contact1: username,
-        Contact2: contact,
-        Messages: [],
-      });
-    }
-  }
+// function AddContact(username, contact) {
+//   if (UserExists(username) && UserExists(contact)) {
+//     const user = DB.Users.find((user) => user.Username === username);
+//     if (!user.Contacts.find((t) => t === contact)) {
+//       user.Contacts.push(contact);
+//       const cont = DB.Users.find((c) => c.Username === contact)
+//       cont.Contacts.push(username);
+//       DB.Chats.push({
+//         Contact1: username,
+//         Contact2: contact,
+//         Messages: [],
+//       });
+//     }
+//   }
+// }
+
+async function AddContact(id, name, contactServer) {
+  const contactJSON = { id: id, name: name, server: contactServer }
+  await $.ajax({
+    url: server + 'contacts/',
+    type: 'POST',
+    xhrFields: { withCredentials: true },
+    data: JSON.stringify(contactJSON),
+    contentType: 'application/json; charset=utf-8'
+  }).catch((ex) => console.log(ex))
 }
 
 // function LoginCheck(username, password) {
@@ -174,6 +185,19 @@ async function GetContacts(setter) {
   setter(response);
 }
 
+async function GetContact(username) {
+  if (username === undefined || username.length < 1 ) return undefined;
+  let response;
+  await $.ajax({
+    url: server + 'contacts/' + username,
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    contentType: 'application/json',
+    success: (data) => { return data },
+  }).catch(() => { response = true; }).then((data) => {response = data;})
+  return response;
+}
+
 // Returns the chat of the user with another user, if exists.
 // function GetChat(username, recipient) {
 //   const user = DB.Users.find((u) => u.Username === username);
@@ -230,6 +254,7 @@ export {
   GetImage,
   GetChat,
   GetContacts,
+  GetContact,
   GetLastMessage,
   GetLastSeen,
   GetTime
