@@ -82,10 +82,11 @@ export default function Chat(props) {
   };
 
   // Sends a message to the chat
-  function sendMessage(e, type, content) {
+  async function sendMessage(e, type, content) {
     e.preventDefault();
     if (content !== "") {
-      AddMessage(props.activeUser, props.curContact.id, content);
+      await AddMessage(props.activeUser, props.curContact.id, content);
+      await GetChat(props.curContact, props.setCurChat);
       cleanUp();
     }
   }
