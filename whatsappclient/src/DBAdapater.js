@@ -1,5 +1,6 @@
 import DB from "./DB.json";
 import $ from 'jquery';
+import { HubConnectionBuilder , LogLevel } from "@microsoft/signalr";
 
 const server = "http://localhost:5064/api/";
 

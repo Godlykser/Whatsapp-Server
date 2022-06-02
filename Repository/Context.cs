@@ -5,7 +5,7 @@ namespace Repository
 {
     public class Context : DbContext
     {
-        private const string connectionString = "server=localhost;port=3306;database=whatsappDB;user=root;password=157221";
+        private const string connectionString = "server=localhost;port=3306;database=whatsappDB;user=root;password=oriel";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
