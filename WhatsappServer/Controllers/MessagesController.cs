@@ -1,7 +1,9 @@
 using Domain;
+using WhatsappServer.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace WhatsappServer.Controllers
 {
@@ -10,8 +12,24 @@ namespace WhatsappServer.Controllers
     [Route("api/contacts/{id}/messages")]
     public class MessagesController : ControllerBase
     {
-        MessagesService messagesService = new MessagesService();
-        ContactsService contactsService = new ContactsService();
+        private MessagesService messagesService;
+        private ContactsService contactsService;
+        private readonly IHubContext<ChatHub> hubContext;
+
+        public MessagesController(IHubContext<ChatHub> context)
+        {
+            messagesService = new MessagesService();
+            contactsService = new ContactsService();
+            hubContext = context;
+        }
+
+        private async Task SendMessage(string username)
+        {
+            if (ChatHub.UserMap.ContainsKey(username))
+            {
+                await hubContext.Clients.Client(ChatHub.UserMap[username]).SendAsync("ReceiveMessage");
+            }
+        }
 
         [HttpGet]
         public IActionResult GetAllMessages(string? id)
@@ -28,7 +46,7 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPost]
-        public IActionResult addMessage(string id, [FromBody] Message message)
+        public async Task<IActionResult> addMessage(string id, [FromBody] Message message)
         {
             try
             {
@@ -42,6 +60,7 @@ namespace WhatsappServer.Controllers
 
                 Contact contact = new Contact { belongTo = user, id = id, lastdate = DateTime.Now, last = message.content };
                 contactsService.Edit(contact);
+                await SendMessage(id);
                 return Created("", message);
             }
             catch (Exception e)

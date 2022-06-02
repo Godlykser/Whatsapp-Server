@@ -1,7 +1,30 @@
-import DB from "./DB.json";
 import $ from 'jquery';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { useState } from 'react';
 
 const server = "http://localhost:5064/api/";
+let signalRConnection;
+
+const signalR = async (username, setter, value) => {
+  
+  try {
+    const connection = new HubConnectionBuilder().withUrl('http://localhost:5064/signalRHub')
+                                  .configureLogging(LogLevel.Information).build();
+    console.log(connection.baseUrl)
+        
+    await connection.start();
+    connection.on('ReceiveMessage', () => { setter(!value) });
+    await connection.invoke('AddUser', username);
+    signalRConnection = connection;
+    
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+const GetConnection = () => {
+  return signalRConnection;
+}
 
 // function UserExists(username) {
 //   const user = DB.Users.find((u) => u.Username === username.toLowerCase());
@@ -72,8 +95,8 @@ async function AddMessage(sender, receiver, content) {
 //   }
 // }
 
-async function AddContact(id, name, contactServer) {
-  const contactJSON = { id: id, name: name, server: contactServer }
+async function AddContact(id, name, server) {
+  const contactJSON = { id, name, server }
   await $.ajax({
     url: server + 'contacts/',
     type: 'POST',
@@ -257,5 +280,7 @@ export {
   GetContact,
   GetLastMessage,
   GetLastSeen,
-  GetTime
+  GetTime,
+  signalR,
+  GetConnection
 };

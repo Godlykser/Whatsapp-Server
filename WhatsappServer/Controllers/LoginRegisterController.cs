@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using WhatsappServer.Hubs;
 
 namespace WhatsappServer.Controllers
 {
@@ -59,6 +60,7 @@ namespace WhatsappServer.Controllers
                     signingCredentials: mac);
                 var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
                 Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
+
                 return Ok("Welcome!");
             }
             catch (Exception ex)

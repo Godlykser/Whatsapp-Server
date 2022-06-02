@@ -1,12 +1,13 @@
 import $ from "jquery";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AddMessage,
   GetImage,
   GetLastSeen,
   GetNickname,
   GetTime,
-  GetChat
+  GetChat,
+  signalR
 } from "../../DBAdapater";
 import AttachButton from "./AttachButton";
 import "./Chat.css";
@@ -34,6 +35,14 @@ export default function Chat(props) {
       setRecordInput("");
     } else if (messageInput !== "") sendMessage(e, "text", messageInput);
   };
+
+  useEffect( () => {
+    GetChat(props.curContact, props.setCurChat);
+  }, [props.receiveMessage]);
+
+  useEffect( async () => {
+    signalR(props.activeUser, props.setReceiveMessage, props.receiveMessage);
+  }, [props.activeUser]);
 
   // Make everything work smoothly
   const cleanUp = () => {

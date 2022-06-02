@@ -2,6 +2,7 @@ import { React, useContext } from "react";
 import "./LogoutButton.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import { GetConnection } from "../../DBAdapater";
 
 export default function LogoutButton() {
   let navigate = useNavigate();
@@ -9,6 +10,8 @@ export default function LogoutButton() {
 
   const logout = () => {
     setActiveContact("");
+    let con = GetConnection();
+    if (con !== null) con.stop();
     navigate("/");
   };
 

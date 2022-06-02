@@ -6,7 +6,6 @@ function AddContactButton(props) {
   const [disabled, setDisabled] = useState(true);
   const [contact, setContact] = useState("");
   const [name, setName] = useState("");
-  const [server, setServer] = useState("");
 
   useEffect(() => {
     var temp = (!UserExists(contact.id) || contact.id===props.activeUser);
@@ -14,15 +13,14 @@ function AddContactButton(props) {
   }, [contact]);
 
   const addContact = async () => {
-    if (contact === '' || contact === '' || server === '') return;
+    if (contact === '' || contact === '') return;
     if (UserExists(contact) && contact !== props.activeUser) {
-      await AddContact(contact, name, server);
+      await AddContact(contact, name, 'http://localhost:' + window.location.port);
       const newContact = await GetContact(contact);
       await GetChat(newContact, props.setCurChat);
       props.setActiveContact(newContact);
       setContact("");
       setName("");
-      setServer("");
     }
     // const updatedContacts = props.contacts;
     // props.setContacts(updatedContacts);
@@ -92,17 +90,6 @@ function AddContactButton(props) {
                     onChange={(e) => setName(e.target.value)}
                   />
                   <label htmlFor="contactname">Name</label>
-                </div>
-                <div className="form-floating mb-3">
-                  <input
-                    type="text"
-                    placeholder="Contact's server"
-                    id="contactser"
-                    className="form-control"
-                    value={server}
-                    onChange={(e) => setServer(e.target.value)}
-                  />
-                  <label htmlFor="contactser">Server</label>
                 </div>
               </div>
               <div className="modal-footer">
