@@ -3,13 +3,13 @@ using Microsoft.IdentityModel.Tokens;
 using Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using WhatsappServer.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ContactsService>();
@@ -48,6 +48,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+// builder.Services.AddScoped<ChatHub>();
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,11 +60,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection(); maybe
+// app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors("Allow All");
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/signalRHub");
+});
 
 app.Run();

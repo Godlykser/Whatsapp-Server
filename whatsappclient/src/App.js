@@ -10,16 +10,20 @@ export const UserContext = createContext()
 export default function App() {
     // Creates an active user and a setter using useState to share across paths.
     const [activeUser, setActiveUser] = useState('');
+    const [updateLastMessage, setUpdateLastMessage] = useState(false)
 
     return (
         <UserContext.Provider value={setActiveUser}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<MainScreen />} />
-                    <Route path="/login" element={<LoginForm setActiveUser={setActiveUser} />} />
+                    <Route path="/login" element={<LoginForm setActiveUser={setActiveUser}
+                                                            updateLastMessage={updateLastMessage}
+                                                            setUpdateLastMessage={setUpdateLastMessage} />} />
                     <Route path="/register" element={<RegisterForm setActiveUser={setActiveUser} />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
-                    <Route path="/chats" element={<ChatsScreen activeUser={activeUser} />} />
+                    <Route path="/chats" element={<ChatsScreen activeUser={activeUser} 
+                                updateLastMessage={updateLastMessage} setUpdateLastMessage={setUpdateLastMessage}/>} />
                     {/* <Route path="*" element={<Navigate to="/chats" replace />} /> */}
                 </Routes>
             </BrowserRouter>

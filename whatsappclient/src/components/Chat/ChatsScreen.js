@@ -5,38 +5,40 @@ import Chat from "./Chat";
 import { GetChat } from "../../DBAdapater";
 import NotLogged from "../Forms/NotLogged";
 
-export default function ChatsScreen({ activeUser }) {
+export default function ChatsScreen(props) {
 
   const [activeContact, setActiveContact] = useState('');
   const [curChat, setCurChat] = useState(undefined);
-  const [updateLastMessage, setUpdateLastMessage] = useState(false)
+  const [receiveMessage, setReceiveMessage] = useState(false);
   
   useEffect(() => {
     if (activeContact !== '') {
       GetChat(activeContact, setCurChat);
-      setUpdateLastMessage(!updateLastMessage);
+      props.setUpdateLastMessage(!props.updateLastMessage);
     }
   }, [activeContact]);
 
-    if (activeUser === '') {
+    if (props.activeUser === '') {
       return <NotLogged />;
     }
 
     return (
         <div className="chats__body">
             <Sidebar
-                activeUser={activeUser}
+                activeUser={props.activeUser}
                 activeContact={activeContact}
                 setActiveContact={setActiveContact}
-                updateLastMessage={updateLastMessage}
+                updateLastMessage={props.updateLastMessage}
                 setCurChat={setCurChat} />
             <Chat
                 curChat={curChat}
                 setCurChat = { setCurChat }
-                activeUser={activeUser}
+                activeUser={props.activeUser}
                 curContact={activeContact}
-                setUpdateLastMessage={setUpdateLastMessage}
-                updateLastMessage={updateLastMessage} />
+                setUpdateLastMessage={props.setUpdateLastMessage}
+                updateLastMessage={props.updateLastMessage} 
+                setReceiveMessage={setReceiveMessage}
+                receiveMessage={receiveMessage} />
         </div>
     );
 }

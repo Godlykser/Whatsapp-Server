@@ -7,7 +7,7 @@ import { Login } from "../../DBAdapater";
 import $ from 'jquery';
 
 
-export default function LoginForm({ setActiveUser }) {
+export default function LoginForm(props) {
 
     let navigate = useNavigate();
     const [invalidMessage, setInvalidMessage] = useState('');
@@ -41,8 +41,7 @@ export default function LoginForm({ setActiveUser }) {
         element.preventDefault();
 
         if (await Login(usernameValue, passwordValue)) {
-            setActiveUser(usernameValue);
-            await setInterval(() => {}, 200);
+            props.setActiveUser(usernameValue);
             navigate('/chats');
         } else {
             setInvalidMessage("Invalid username or password.");
