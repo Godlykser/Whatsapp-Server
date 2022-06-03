@@ -7,7 +7,9 @@ import {
   GetNickname,
   GetTime,
   GetChat,
-  signalR
+  signalR,
+  GetServer,
+  Transfer
 } from "../../DBAdapater";
 import AttachButton from "./AttachButton";
 import "./Chat.css";
@@ -59,35 +61,7 @@ export default function Chat(props) {
 
   // Displays the message by type
   const displayMessageContent = (msg) => {
-    // if (msg.Type === "text")
     return <span className="message__text">{msg.content}</span>;
-    // else if (msg.Type === "image")
-    //   return <img className="chatImage" alt="" src={msg.Content} />;
-    // else if (msg.Type === "video")
-    //   return (
-    //     <video className="chatVideo" src={msg.Content} controls="controls" />
-    //   );
-    // else {
-    //   return (
-    //     <>
-    //       <audio
-    //         className={`${
-    //           isSender(msg) === "chat__sender"
-    //             ? "chatAudioSender"
-    //             : "chatAudioReciever"
-    //         }`}
-    //         controls
-    //       >
-    //         <source src={msg.Content} type="audio/mp3" />
-    //       </audio>
-    //       <img
-    //         className="audioAvatar"
-    //         alt={msg.Sender}
-    //         src={GetImage(msg.Sender)}
-    //       />
-    //     </>
-    //   );
-    // }
   };
 
   // Sends a message to the chat
@@ -95,6 +69,9 @@ export default function Chat(props) {
     e.preventDefault();
     if (content !== "") {
       await AddMessage(props.activeUser, props.curContact.id, content);
+      if(GetServer() !== props.curContact.server) {
+        await Transfer(props.curContact.id, props.activeUser, content, props.curContact.server);
+      }
       await GetChat(props.curContact, props.setCurChat);
       cleanUp();
     }

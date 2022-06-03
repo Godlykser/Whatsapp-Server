@@ -1,14 +1,15 @@
 import $ from 'jquery';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { useState } from 'react';
 
+const noApiServer = "http://localhost:5064/";
 const server = "http://localhost:5064/api/";
 let signalRConnection;
 
+// Connect to server via SignalR
 const signalR = async (username, setter, value) => {
   
   try {
-    const connection = new HubConnectionBuilder().withUrl('http://localhost:5064/signalRHub')
+    const connection = new HubConnectionBuilder().withUrl(noApiServer + 'signalRHub')
                                   .configureLogging(LogLevel.Information).build();
     console.log(connection.baseUrl)
         
@@ -22,14 +23,15 @@ const signalR = async (username, setter, value) => {
   }
 }
 
+// Returns the SignalR connection
 const GetConnection = () => {
   return signalRConnection;
 }
 
-// function UserExists(username) {
-//   const user = DB.Users.find((u) => u.Username === username.toLowerCase());
-//   return user !== undefined ? true : false;
-// }
+// Returns the server address
+const GetServer = () => {
+  return noApiServer;
+}
 
 // Checks if username already exists.
 async function UserExists(username) {
@@ -44,21 +46,9 @@ async function UserExists(username) {
   return response;
 }
 
-// function AddUser(username, nickname, password, image) {
-//   if (UserExists(username)) return;
-//   DB.Users.push({
-//     Username: username.toLowerCase(),
-//     Nickname: nickname,
-//     Password: password,
-//     Image: image,
-//     LastSeen: "Now",
-//     Contacts: []
-//   });
-// }
-
 // Adds user to the DB.
 async function AddUser(username, nickname, password, image) {
-  const userJSON = { username, password, server: 'http://localhost:' + window.location.port };
+  const userJSON = { username, password };
   await $.ajax({
     url: server + 'register',
     type: 'POST',
@@ -79,26 +69,12 @@ async function AddMessage(sender, receiver, content) {
   }).catch((ex) => console.log(ex))
 }
 
-// function AddContact(username, contact) {
-//   if (UserExists(username) && UserExists(contact)) {
-//     const user = DB.Users.find((user) => user.Username === username);
-//     if (!user.Contacts.find((t) => t === contact)) {
-//       user.Contacts.push(contact);
-//       const cont = DB.Users.find((c) => c.Username === contact)
-//       cont.Contacts.push(username);
-//       DB.Chats.push({
-//         Contact1: username,
-//         Contact2: contact,
-//         Messages: [],
-//       });
-//     }
-//   }
-// }
-
-async function AddContact(id, name, server) {
-  const contactJSON = { id, name, server }
+// Add a contact
+async function AddContact(id, name, contactServer) {
+  const contactJSON = { id, name, server: contactServer }
+  console.log(JSON.stringify(contactJSON))
   await $.ajax({
-    url: server + 'contacts/',
+    url: server + 'contacts',
     type: 'POST',
     xhrFields: { withCredentials: true },
     data: JSON.stringify(contactJSON),
@@ -106,11 +82,30 @@ async function AddContact(id, name, server) {
   }).catch((ex) => console.log(ex))
 }
 
-// function LoginCheck(username, password) {
-//   if (!UserExists(username)) return false;
-//   const user = DB.Users.find((user) => user.Username === username);
-//   return user.Password === password;
-// }
+// Invite a contact
+async function Invitation(to, from, contactServer) {
+  const contactJSON = { to, from, server: noApiServer }
+  let response;
+  await $.ajax({
+    url: contactServer + 'invitations',
+    type: 'POST',
+    xhrFields: { withCredentials: true },
+    data: JSON.stringify(contactJSON),
+    contentType: 'application/json; charset=utf-8'
+  }).catch((ex) => console.log(ex))
+}
+
+// Transfer a message
+async function Transfer(to, from, content, contactServer) {
+  const contactJSON = { to, from, content }
+  await $.ajax({
+    url: contactServer + 'transfer',
+    type: 'POST',
+    xhrFields: { withCredentials: true },
+    data: JSON.stringify(contactJSON),
+    contentType: 'application/json; charset=utf-8'
+  }).catch((ex) => console.log(ex))
+}
 
 // Checks if details are valid for login.
 async function Login(username, password) {
@@ -127,46 +122,10 @@ async function Login(username, password) {
   return response;
 }
 
-// async function Login(username, password) {
-//   await axios.post(
-//     server + 'login',
-//     { username, password },
-//     { withCredentials: true }
-//   )
-//   return true;
-// }
-
-// Returns user's nickname.
-// function GetNickname(username) {
-//   if (UserExists(username)) {
-//     const user = DB.Users.find((user) => user.Username === username);
-//     return user.Nickname;
-//   }
-// }
-
-// Returns user's nickname.
-// async function GetNickname(username) {
-//   let response;
-//   await $.ajax({
-//     url: server + username,
-//     type: 'GET',
-//     contentType: 'application/json',
-//     success: (data) => { console.log(data.data); },
-//   }).catch(() => { response = true; })
-//   return response;
-// }
-
+// Returns contacts name
 function GetNickname(contact) {
   return contact.name;
 }
-
-// Returns user's image.
-// function GetImage(username) {
-//   if (UserExists(username)) {
-//     const user = DB.Users.find((user) => user.Username === username);
-//     return user.Image;
-//   }
-// }
 
 // Returns a picture of a crying cat brushing his tiny teeth
 function GetImage(username) {
@@ -175,21 +134,8 @@ function GetImage(username) {
 
 // Returns user's last seen.
 function GetLastSeen(contact) {
-  // if (UserExists(username)) {
-  //   const user = DB.Users.find((user) => user.Username === username);
-  //   return user.LastSeen;
-  // }
   return "Online";
 }
-
-
-// function GetContacts(username) {
-//   if (UserExists(username)) {
-//     const user = DB.Users.find((user) => user.Username === username);
-//     return user.Contacts !== undefined ? user.Contacts : [];
-//   }
-//   return [];
-// }
 
 // Returns a JSON of the user's contacts.
 async function GetContacts(setter) {
@@ -208,6 +154,7 @@ async function GetContacts(setter) {
   setter(response);
 }
 
+// Returns a contact JSON by id
 async function GetContact(username) {
   if (username === undefined || username.length < 1 ) return undefined;
   let response;
@@ -221,23 +168,7 @@ async function GetContact(username) {
   return response;
 }
 
-// Returns the chat of the user with another user, if exists.
-// function GetChat(username, recipient) {
-//   const user = DB.Users.find((u) => u.Username === username);
-//   if (user !== undefined) {
-//     const recip = DB.Users.find((r) => r.Username === recipient);
-//     if (recip !== undefined) {
-//       const chat = DB.Chats.find(
-//         (c) =>
-//           (c.Contact1 === recipient && c.Contact2 === username) ||
-//           (c.Contact1 === username && c.Contact2 === recipient)
-//       );
-//       return chat;
-//     }
-//   }
-//   return undefined;
-// }
-
+// Sets up the chat with this contact
 async function GetChat(contact, setter) {
   const func = await $.ajax({
     url: server + 'contacts/' + contact.id + '/messages',
@@ -258,6 +189,7 @@ function GetLastMessage(chat) {
   return undefined;
 }
 
+// Returns formatted date
 function GetTime(date) {
   const d = new Date(date);
   const time =
@@ -282,5 +214,8 @@ export {
   GetLastSeen,
   GetTime,
   signalR,
-  GetConnection
+  GetConnection,
+  GetServer,
+  Invitation,
+  Transfer
 };
