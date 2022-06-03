@@ -1,21 +1,36 @@
 import { React, useState, useEffect } from "react";
 import "./AddContactButton.css";
-import { UserExists, AddContact, GetChat, GetContact } from "../../DBAdapater";
+import { 
+  UserExists,
+  AddContact,
+  GetChat,
+  GetContact,
+  GetServer,
+  Invitation 
+} from "../../DBAdapater";
 
 function AddContactButton(props) {
   const [disabled, setDisabled] = useState(true);
   const [contact, setContact] = useState("");
   const [name, setName] = useState("");
+  const [server, setServer] = useState("");
 
   useEffect(() => {
-    var temp = (!UserExists(contact.id) || contact.id===props.activeUser);
+    var temp = (!UserExists(contact) || contact===props.activeUser);
     setDisabled(temp);
   }, [contact]);
 
   const addContact = async () => {
-    if (contact === '' || contact === '') return;
+    if (contact === '' || name === '' || server === '') return;
+    let s = server;
+    console.log(s)
+    if (s.slice(-1) !== "/") s += '/';
+    console.log(s)
     if (UserExists(contact) && contact !== props.activeUser) {
-      await AddContact(contact, name, 'http://localhost:' + window.location.port);
+      await AddContact(contact, name, s);
+      if (GetServer() !== s) {
+        await Invitation(contact, props.activeUser, s);
+      }
       const newContact = await GetContact(contact);
       await GetChat(newContact, props.setCurChat);
       props.setActiveContact(newContact);
@@ -90,6 +105,17 @@ function AddContactButton(props) {
                     onChange={(e) => setName(e.target.value)}
                   />
                   <label htmlFor="contactname">Name</label>
+                </div>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    placeholder="Contact's server"
+                    id="contactserver"
+                    className="form-control"
+                    value={server}
+                    onChange={(e) => setServer(e.target.value)}
+                  />
+                  <label htmlFor="contactid">Server</label>
                 </div>
               </div>
               <div className="modal-footer">

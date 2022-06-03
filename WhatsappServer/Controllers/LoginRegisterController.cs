@@ -76,6 +76,7 @@ namespace WhatsappServer.Controllers
         {
             try
             {
+                user.server = "http://localhost:5064";
                 userService.CreateUser(user);
                 return Created("",user.username);
             }
