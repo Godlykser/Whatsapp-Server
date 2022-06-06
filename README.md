@@ -7,7 +7,8 @@
 * .NET: https://dotnet.microsoft.com/en-us/
 * MariaDB: https://mariadb.org/download/
 ## Run Locally 👨🏽‍💻
-* First go to the appsettings.json files and change the username and password in the DB to those that you've chosen when mariaDB was installed.<br />
+* `git clone https://github.com/chenbarsano1/WhatsappServer.git`
+* Go to the appsettings.json files and change the username and password in the DB to those that you've chosen when mariaDB was installed.<br />
 * Now run these commands:<br />
 `cd WhatsApp-Client`<br />
 `npm install`<br />
