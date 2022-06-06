@@ -1,0 +1,97 @@
+﻿@model IEnumerable<WhatsappServer.Models.Review>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <h1>WhatsApp Reviews</h1>
+</p>
+<form asp-action="Index">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+        <input type="text"
+               name="query"
+               id="search"
+               class="form-control"
+               placeholder="Review title or author..."
+               aria-label=""
+               aria-describedby="basic-addon1">
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Feedback)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Score)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Feedback)
+            </td>
+            <td>
+            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            <a class="btn btn-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+@section Scripts {
+
+    <script type="text/html" id="template">
+        <tr>
+            <td>
+                {username}
+            </td>
+            <td>
+                {date}
+            </td>
+            <td>
+                {score}
+            </td>
+            <td>
+                {feedback}
+            </td>
+            <td>
+            <a class="btn btn-secondary" asp-action="Edit" asp-route-id="{id}">Edit</a>
+            <a class="btn btn-secondary" asp-action="Details" asp-route-id="{id}">Details</a>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-id="{id}">Delete</a>
+            </td>
+        </tr>
+    </script>
+
+    <script src="~/js/search.js"></script>
+}

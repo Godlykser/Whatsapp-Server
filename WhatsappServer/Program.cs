@@ -1,11 +1,16 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using WhatsappServer.Hubs;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using WhatsappServer.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ReviewsContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ReviewsContext") ?? throw new InvalidOperationException("Connection string 'ReviewsContext' not found.")));
 
 // Add services to the container.
 
