@@ -1,5 +1,8 @@
 # WhatsApp Clone Server API 💻
-## Technologies used 💫
+## Features 💫
+* real-time messages
+* app reviews
+## Technologies used 🗒
 * ASP.Net
 * SignalR
 ## Prerequisites 🗒
