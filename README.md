@@ -9,9 +9,10 @@
 * Node.js and npm: https://nodejs.org/en/
 * .NET: https://dotnet.microsoft.com/en-us/
 * MariaDB: https://mariadb.org/download/
+* HiediSQL: https://www.heidisql.com/download.php
 ## Run Locally 👨🏽‍💻
 * `git clone https://github.com/chenbarsano1/WhatsappServer.git`
-* Go to the appsettings.json files and change the username and password in the DB to those that you've chosen when mariaDB was installed.<br />
+* Go to Context.cs and change the username and password in the DB to those that you've chosen when mariaDB was installed.<br />
 * Now run these commands:<br />
 `cd WhatsApp-Client`<br />
 `npm install`<br />
