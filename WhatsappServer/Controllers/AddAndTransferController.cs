@@ -55,13 +55,15 @@ namespace WhatsappServer.Controllers
 
         [Route("transfer")]
         [HttpPost]
-        public IActionResult Transfer([FromBody] Transfer transfer)
+        public async Task<IActionResult> Transfer([FromBody] Transfer transfer)
         {
             try
             {
                 Message message = new Message { belongs = transfer.to, contactUsername = transfer.from, content = transfer.content, created = DateTime.Now, sent = false };
                 messagesService.Add(message);
                 contactsService.Edit(new Contact { belongTo = transfer.to, id = transfer.from, last = transfer.content, lastdate = DateTime.Now });
+                await SendMessage(transfer.to);
+                await SendMessage(transfer.from);
                 return Created("", message);
             }
             catch (Exception ex)
