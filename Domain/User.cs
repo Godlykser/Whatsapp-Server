@@ -8,9 +8,11 @@ namespace Domain
 {
     public class User
     {
-        public string? username { get; set; }
-        public string? password { get; set; }
+        public string? username { get; set; } // username
+        public string? password { get; set; } // password
         //public string? name { get; set; }
-        public string? server { get; set; }
+        public string? server { get; set; } // connected server
+
+        public string? token { get; set; } // firebase token
     }
 }

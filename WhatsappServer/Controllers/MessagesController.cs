@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using Microsoft.AspNetCore.SignalR;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
 
 namespace WhatsappServer.Controllers
 {
@@ -46,21 +48,44 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> addMessage(string id, [FromBody] Message message)
+        public async Task<IActionResult> AddMessage(string id, [FromBody] Domain.Message message)
         {
             try
             {
                 var user = HttpContext.User.FindFirst("username")?.Value;
                 message.sent = message.sent;
-                message.contactUsername = id;
-                message.belongs = user;
+                message.recipient = id;
+                message.sender = user;
                 message.created = DateTime.Now;
                 message.content = message.content;
                 messagesService.Add(message);
-
-                Contact contact = new Contact { belongTo = user, id = id, lastdate = DateTime.Now, last = message.content };
+                // send message
+                Contact contact = new Contact { user = user, contact = id, lastdate = DateTime.Now, last = message.content };
                 contactsService.Edit(contact);
                 await SendMessage(id);
+                // send notification
+
+                if (FirebaseNotificationHub.TokenMap.ContainsKey(user))
+                {
+                    FirebaseApp.Create();
+                    // gets sender's nickname in receiver's contacts
+                    string? senderName = contactsService.GetDetails(user, id)?.name;
+                    var messageBody = $"{senderName} sent you a message";
+
+                    var firebase_msg = new FirebaseAdmin.Messaging.Message()
+                    {
+                        Notification = new FirebaseAdmin.Messaging.Notification()
+                        {
+                            Title = senderName,
+                            Body = message.content,
+                        },
+                        Token = FirebaseNotificationHub.TokenMap[user]
+                    };
+
+                    string response = await FirebaseMessaging.DefaultInstance.SendAsync(firebase_msg);
+                    // prints response
+                    Console.WriteLine("Message notification: " + response);
+                }
                 return Created("", message);
             }
             catch (Exception e)
@@ -87,13 +112,13 @@ namespace WhatsappServer.Controllers
         }
 
         [HttpPut("{id2}")]
-        public IActionResult EditMessage(string id, int id2, [FromBody] Message message)
+        public IActionResult EditMessage(string id, int id2, [FromBody] Domain.Message message)
         {
             try
             {
                 var user = HttpContext.User.FindFirst("username")?.Value;
-                message.belongs = user;
-                message.contactUsername = id;
+                message.sender = user;
+                message.recipient = id;
                 message.id = id2;
                 messagesService.Edit(message);
                 return NoContent();

@@ -5,7 +5,7 @@ namespace Repository
 {
     public class Context : DbContext
     {
-        private const string connectionString = "server=localhost;port=3306;database=whatsappDB;user=root;password=157221";
+        private const string connectionString = "server=localhost;port=3306;database=whatsappDB;user=root;password=123qwe4r5t";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -15,7 +15,7 @@ namespace Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Contact>()
-                .HasKey(nameof(Contact.belongTo), nameof(Contact.id));
+                .HasKey(nameof(Contact.user), nameof(Contact.contact));
 
             modelBuilder.Entity<Message>()
                 .HasKey(nameof(Message.id));

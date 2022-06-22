@@ -61,6 +61,15 @@ namespace WhatsappServer.Controllers
                 var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
                 Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
 
+                // removes user if token is already in the database
+                if (FirebaseNotificationHub.TokenMap.ContainsValue(user.token))
+                {
+                    var prev_owner = FirebaseNotificationHub.TokenMap.FirstOrDefault(x => x.Value == user.token).Key;
+                    FirebaseNotificationHub.TokenMap.Remove(prev_owner);
+                }
+                // adds user to the token map
+                FirebaseNotificationHub.TokenMap[user.username] = user.token;
+
                 return Ok("Welcome!");
             }
             catch (Exception ex)
@@ -76,8 +85,17 @@ namespace WhatsappServer.Controllers
         {
             try
             {
+                // sets user's server and adds to db
                 user.server = "http://localhost:5064";
                 userService.CreateUser(user);
+                // checks if token is already in the database
+                if (FirebaseNotificationHub.TokenMap.ContainsValue(user.token))
+                {
+                    FirebaseNotificationHub.TokenMap.Remove(user.token);
+                }
+                // maps user to firebase token
+                FirebaseNotificationHub.TokenMap[user.username] = user.token;
+
                 return Created("",user.username);
             }
             catch (Exception ex)
