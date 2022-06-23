@@ -9,12 +9,12 @@ namespace Services
 
         public List<Contact> GetAll(string belong)
         {
-            return context.Contacts.Where(contact => contact.user == belong).ToList();
+            return context.Contacts.Where(contact => contact.belongTo == belong).ToList();
         }
 
         public void Add(Contact contact)
         {
-            if(contact.contact == null || contact.name == null || contact.server == null)
+            if(contact.id == null || contact.name == null || contact.server == null)
             {
                 throw new Exception("Not enough parameters");
             }
@@ -30,9 +30,14 @@ namespace Services
             return context.Contacts.Find(belongTo, id);
         }
 
+        public string? GetContactName(string belongTo, string id)
+        {
+            return context.Contacts.Find(belongTo, id)?.name;
+        }
+
         public void Edit(Contact newContact)
         {
-            var contact = context.Contacts.Find(newContact.user, newContact.contact);
+            var contact = context.Contacts.Find(newContact.belongTo, newContact.id);
             
             if (newContact.name != null)
             {

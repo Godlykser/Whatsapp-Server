@@ -19,10 +19,10 @@ namespace Services
         /// <returns></returns>
         public List<Message> GetAll(string user, string contact)
         {
-            return context.Messages.Where(message => (message.recipient == contact 
-                                            && message.sender == user)
-                                            || message.recipient == user
-                                            && message.sender == contact).ToList();
+            return context.Messages.Where(message => (message.contactUsername == contact 
+                                            && message.belongs == user)
+                                            || message.contactUsername == user
+                                            && message.belongs == contact).ToList();
         }
         /// <summary>
         /// Gets specific message between user and contact from db
@@ -35,7 +35,7 @@ namespace Services
         public Message GetMessage(string user, string contact, int id2)
         {
             Message message = context.Messages.Find(id2);
-            if (message != null && message.sender == user && message.recipient == contact) return message;
+            if (message != null && message.belongs == user && message.contactUsername == contact) return message;
             else throw new Exception("Message not found");
         }
 
@@ -57,7 +57,7 @@ namespace Services
         public void Edit(Message message)
         {
             Message oldMessage = context.Messages.Find(message.id);
-            if (oldMessage == null || oldMessage.sender != message.sender && oldMessage.recipient != message.recipient)
+            if (oldMessage == null || oldMessage.belongs != message.belongs && oldMessage.contactUsername != message.contactUsername)
             {
                 throw new Exception("Message not found");
             }
@@ -79,13 +79,13 @@ namespace Services
         /// Deletes message from db
         /// </summary>
         /// <param name="user">message's sender</param>
-        /// <param name="contact">message's recipient</param>
+        /// <param name="contact">message's recepient</param>
         /// <param name="id2">message's id</param>
         /// <exception cref="Exception">throws exception if message not found</exception>
         public void Delete(string user, string contact,int id2)
         {
             Message message = context.Messages.Find(id2);
-            if (message != null && message.sender == user && message.recipient == contact)
+            if (message != null && message.belongs == user && message.contactUsername == contact)
             {
                 context.Messages.Remove(message);
             }

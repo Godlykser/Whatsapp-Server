@@ -15,7 +15,7 @@ namespace Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Contact>()
-                .HasKey(nameof(Contact.user), nameof(Contact.contact));
+                .HasKey(nameof(Contact.belongTo), nameof(Contact.id));
 
             modelBuilder.Entity<Message>()
                 .HasKey(nameof(Message.id));

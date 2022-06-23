@@ -12,7 +12,5 @@ namespace Domain
         public string? password { get; set; } // password
         //public string? name { get; set; }
         public string? server { get; set; } // connected server
-
-        public string? token { get; set; } // firebase token
     }
 }

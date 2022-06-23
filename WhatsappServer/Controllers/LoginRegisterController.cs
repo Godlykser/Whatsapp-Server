@@ -60,15 +60,19 @@ namespace WhatsappServer.Controllers
                     signingCredentials: mac);
                 var options = new CookieOptions { Expires = DateTime.UtcNow.AddMinutes(20), HttpOnly = true, Secure = true, SameSite = SameSiteMode.None };
                 Response.Cookies.Append("jwt", new JwtSecurityTokenHandler().WriteToken(token), options);
-
-                // removes user if token is already in the database
-                if (FirebaseNotificationHub.TokenMap.ContainsValue(user.token))
+                // if received a firebase 
+                if (Request.Headers.Keys.Contains("Token"))
                 {
-                    var prev_owner = FirebaseNotificationHub.TokenMap.FirstOrDefault(x => x.Value == user.token).Key;
-                    FirebaseNotificationHub.TokenMap.Remove(prev_owner);
+                    var firebaseToken = Request.Headers["token"].ToString();
+                    // removes user if token is already in the database
+                    if (FirebaseNotificationHub.TokenMap.ContainsValue(firebaseToken))
+                    {
+                        var prev_owner = FirebaseNotificationHub.TokenMap.FirstOrDefault(x => x.Value == firebaseToken).Key;
+                        FirebaseNotificationHub.TokenMap.Remove(prev_owner);
+                    }
+                    // adds user to the token map
+                    FirebaseNotificationHub.TokenMap[user.username] = firebaseToken;
                 }
-                // adds user to the token map
-                FirebaseNotificationHub.TokenMap[user.username] = user.token;
 
                 return Ok("Welcome!");
             }
@@ -89,12 +93,18 @@ namespace WhatsappServer.Controllers
                 user.server = "http://localhost:5064";
                 userService.CreateUser(user);
                 // checks if token is already in the database
-                if (FirebaseNotificationHub.TokenMap.ContainsValue(user.token))
+                if (Request.Headers.Keys.Contains("Token"))
                 {
-                    FirebaseNotificationHub.TokenMap.Remove(user.token);
+                    var firebaseToken = Request.Headers["token"].ToString();
+                    // removes user if token is already in the database
+                    if (FirebaseNotificationHub.TokenMap.ContainsValue(firebaseToken))
+                    {
+                        var prev_owner = FirebaseNotificationHub.TokenMap.FirstOrDefault(x => x.Value == firebaseToken).Key;
+                        FirebaseNotificationHub.TokenMap.Remove(prev_owner);
+                    }
+                    // adds user to the token map
+                    FirebaseNotificationHub.TokenMap[user.username] = firebaseToken;
                 }
-                // maps user to firebase token
-                FirebaseNotificationHub.TokenMap[user.username] = user.token;
 
                 return Created("",user.username);
             }

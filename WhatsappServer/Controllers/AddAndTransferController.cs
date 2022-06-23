@@ -41,7 +41,7 @@ namespace WhatsappServer.Controllers
                     throw new Exception("User cannot be null");
                 }
 
-                Contact contact = new Contact { user = invite.to, contact = invite.from, name = invite.from, server = invite.server };
+                Contact contact = new Contact { belongTo = invite.to, id = invite.from, name = invite.from, server = invite.server };
                 contactsService.Add(contact);
                 await SendMessage(invite.to);
                 await SendMessage(invite.from);
@@ -59,9 +59,9 @@ namespace WhatsappServer.Controllers
         {
             try
             {
-                Message message = new Message { sender = transfer.to, recipient = transfer.from, content = transfer.content, created = DateTime.Now, sent = false };
+                Message message = new Message { belongs = transfer.to, contactUsername = transfer.from, content = transfer.content, created = DateTime.Now, sent = false };
                 messagesService.Add(message);
-                contactsService.Edit(new Contact { user = transfer.to, contact = transfer.from, last = transfer.content, lastdate = DateTime.Now });
+                contactsService.Edit(new Contact { belongTo = transfer.to, id = transfer.from, last = transfer.content, lastdate = DateTime.Now });
                 return Created("", message);
             }
             catch (Exception ex)

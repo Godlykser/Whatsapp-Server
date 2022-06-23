@@ -11,7 +11,6 @@ namespace WhatsappServer.Controllers
     public class ContactsController : ControllerBase
     {
         ContactsService service = new ContactsService();
-        UserService userService = new UserService();
 
         [HttpGet]
         public IActionResult GetAllContacts()
@@ -33,7 +32,7 @@ namespace WhatsappServer.Controllers
             try
             {
                 var user = HttpContext.User.FindFirst("username")?.Value;
-                contact.user = user;
+                contact.belongTo = user;
                 contact.last = null;
                 contact.lastdate = null;
                 service.Add(contact);
@@ -65,8 +64,8 @@ namespace WhatsappServer.Controllers
             try
             {
                 var user = HttpContext.User.FindFirst("username")?.Value;
-                contact.user = user;
-                contact.contact = id;
+                contact.belongTo = user;
+                contact.id = id;
                 service.Edit(contact);
                 return NoContent();
             }
