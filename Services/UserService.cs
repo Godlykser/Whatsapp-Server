@@ -17,6 +17,11 @@ namespace Services
             if (context.Users.Find(id) != null) throw new Exception("User already exists");
         }
 
+        public void UserNotExists(string id)
+        {
+            if (context.Users.Find(id) == null) throw new Exception("User does not exist");
+        }
+
         public void CreateUser(User user)
         {
             if (context.Users.Find(user.username)!=null) throw new Exception("User already exists");
