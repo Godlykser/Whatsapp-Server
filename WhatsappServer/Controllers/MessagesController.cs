@@ -85,7 +85,7 @@ namespace WhatsappServer.Controllers
                     {
                         Data = new Dictionary<string, string>()
                         {
-                            { "message", messageBody }
+                            { "sender", user }
                         },
                         Notification = new FirebaseAdmin.Messaging.Notification()
                         {
